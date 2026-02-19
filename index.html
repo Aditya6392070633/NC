@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Nisha 💍</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@300;400&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #0a0010;
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    cursor: default;
+  }
+
+  /* STARS */
+  #stars-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+  }
+
+  /* SCREENS */
+  .screen {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+  }
+  .screen.active {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  /* SCREEN 1 - Intro */
+  #screen1 h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    color: #fff;
+    text-align: center;
+    letter-spacing: 2px;
+    text-shadow: 0 0 40px rgba(255,180,200,0.6);
+    animation: fadeInUp 1.5s ease forwards;
+    opacity: 0;
+  }
+  #screen1 p {
+    color: rgba(255,220,230,0.7);
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    animation: fadeInUp 1.5s 0.5s ease forwards;
+    opacity: 0;
+  }
+  #screen1 .tap-hint {
+    margin-top: 3rem;
+    color: rgba(255,200,210,0.5);
+    font-size: 0.85rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: pulse 2s 2s infinite, fadeInUp 1s 1.5s forwards;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  /* SCREEN 2 - Journey */
+  #screen2 {
+    gap: 0;
+  }
+  .journey-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 4vw, 2.8rem);
+    color: #fff;
+    text-align: center;
+    padding: 0 2rem;
+    max-width: 700px;
+    line-height: 1.6;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+    position: absolute;
+  }
+  .journey-text.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .journey-text span {
+    color: #ffb3c6;
+  }
+
+  /* SCREEN 3 - Ring */
+  #screen3 {
+    gap: 2rem;
+  }
+  #ring-container {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    animation: floatRing 3s ease-in-out infinite;
+  }
+  .ring-svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 30px rgba(255,215,0,0.8));
+  }
+  .sparkle {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: #fff;
+    border-radius: 50%;
+    animation: sparkle 1.5s ease-in-out infinite;
+  }
+  .sparkle:nth-child(1) { top: 5px; left: 50%; animation-delay: 0s; }
+  .sparkle:nth-child(2) { top: 50%; right: 5px; animation-delay: 0.3s; }
+  .sparkle:nth-child(3) { bottom: 5px; left: 30%; animation-delay: 0.6s; }
+  .sparkle:nth-child(4) { top: 30%; left: 5px; animation-delay: 0.9s; }
+
+  #screen3 h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 3.5rem);
+    color: #fff;
+    text-align: center;
+    padding: 0 1.5rem;
+    line-height: 1.4;
+    text-shadow: 0 0 30px rgba(255,180,200,0.5);
+  }
+  #screen3 h2 em {
+    color: #ffd700;
+    font-style: normal;
+  }
+  .btn-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn {
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    border: none;
+    font-size: 1.1rem;
+    font-family: 'Lato', sans-serif;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 400;
+  }
+  .btn-yes {
+    background: linear-gradient(135deg, #ff6b8a, #ff3366);
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255,80,120,0.5);
+    animation: heartbeat 1.5s ease-in-out infinite;
+  }
+  .btn-yes:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 50px rgba(255,80,120,0.8);
+  }
+  .btn-no {
+    background: transparent;
+    color: rgba(255,255,255,0.4);
+    border: 1px solid rgba(255,255,255,0.2);
+    font-size: 0.85rem;
+    position: relative;
+    transition: all 0.2s;
+  }
+
+  /* SCREEN 4 - Celebration */
+  #screen4 h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: #fff;
+    text-align: center;
+    padding: 0 1rem;
+    line-height: 1.3;
+    text-shadow: 0 0 60px rgba(255,180,200,0.8);
+    animation: celebrationPop 0.8s cubic-bezier(0.175,0.885,0.32,1.275) forwards;
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  #screen4 p {
+    color: rgba(255,220,230,0.8);
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    animation: fadeInUp 1s 1s forwards;
+    opacity: 0;
+  }
+  #confetti-canvas {
+    position: fixed;
+    inset: 0;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  /* PROGRESS DOTS */
+  #progress {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 0.5rem;
+    z-index: 20;
+  }
+  .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.4s ease;
+  }
+  .dot.active { background: #ff6b8a; transform: scale(1.3); }
+
+  /* HEARTS floating */
+  .floating-heart {
+    position: fixed;
+    font-size: 1.5rem;
+    animation: floatHeart 4s ease-in forwards;
+    pointer-events: none;
+    z-index: 15;
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(20px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; }
+    50% { opacity: 1; }
+  }
+  @keyframes floatRing {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+  }
+  @keyframes sparkle {
+    0%, 100% { opacity: 0; transform: scale(0); }
+    50% { opacity: 1; transform: scale(1.5); }
+  }
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    14% { transform: scale(1.05); }
+    28% { transform: scale(1); }
+    42% { transform: scale(1.08); }
+    70% { transform: scale(1); }
+  }
+  @keyframes celebrationPop {
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes floatHeart {
+    0% { transform: translateY(0) scale(1); opacity: 1; }
+    100% { transform: translateY(-100vh) scale(0.5); opacity: 0; }
+  }
+  @keyframes shimmer {
+    0% { filter: brightness(1) drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
+    50% { filter: brightness(1.3) drop-shadow(0 0 40px rgba(255,215,0,1)); }
+    100% { filter: brightness(1) drop-shadow(0 0 20px rgba(255,215,0,0.5)); }
+  }
+
+  /* NO button running away */
+  .btn-no.running {
+    transition: transform 0.15s ease, left 0.15s ease, top 0.15s ease;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<!-- SCREEN 1: Title -->
+<div class="screen active" id="screen1">
+  <h1>For Nisha 💍</h1>
+  <p>A message from the heart</p>
+  <div class="tap-hint" onclick="goToScreen(2)">✦ Tap to begin ✦</div>
+</div>
+
+<!-- SCREEN 2: Journey messages -->
+<div class="screen" id="screen2">
+  <div class="journey-text" id="jt1">Every love story is beautiful...</div>
+  <div class="journey-text" id="jt2">But <span>ours</span> is my favourite. 🌹</div>
+  <div class="journey-text" id="jt3">You make every ordinary moment feel <span>magical</span>.</div>
+  <div class="journey-text" id="jt4">And I never want that magic to end. ✨</div>
+</div>
+
+<!-- SCREEN 3: The Proposal -->
+<div class="screen" id="screen3">
+  <div id="ring-container">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <svg class="ring-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Ring band -->
+      <ellipse cx="100" cy="130" rx="55" ry="20" fill="url(#gold1)" />
+      <ellipse cx="100" cy="120" rx="55" ry="20" fill="url(#gold2)" />
+      <rect x="45" y="120" width="110" height="15" fill="url(#gold3)" rx="2"/>
+      <!-- Diamond -->
+      <polygon points="100,40 130,75 100,95 70,75" fill="url(#diamond1)" />
+      <polygon points="100,40 130,75 100,55" fill="rgba(255,255,255,0.7)" />
+      <polygon points="100,40 70,75 100,55" fill="rgba(200,220,255,0.5)" />
+      <polygon points="100,95 130,75 100,80" fill="rgba(180,200,240,0.6)" />
+      <polygon points="100,95 70,75 100,80" fill="rgba(160,190,230,0.4)" />
+      <!-- Shine lines -->
+      <line x1="100" y1="30" x2="100" y2="15" stroke="white" stroke-width="2" opacity="0.8" stroke-linecap="round"/>
+      <line x1="140" y1="55" x2="152" y2="43" stroke="white" stroke-width="2" opacity="0.8" stroke-linecap="round"/>
+      <line x1="60" y1="55" x2="48" y2="43" stroke="white" stroke-width="2" opacity="0.8" stroke-linecap="round"/>
+      <defs>
+        <linearGradient id="gold1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffd700"/>
+          <stop offset="100%" stop-color="#b8860b"/>
+        </linearGradient>
+        <linearGradient id="gold2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffe066"/>
+          <stop offset="100%" stop-color="#d4a017"/>
+        </linearGradient>
+        <linearGradient id="gold3" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#ffd700"/>
+          <stop offset="100%" stop-color="#a07800"/>
+        </linearGradient>
+        <linearGradient id="diamond1" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#e8f4fd"/>
+          <stop offset="50%" stop-color="#b3d9f7"/>
+          <stop offset="100%" stop-color="#89c4f4"/>
+        </linearGradient>
+      </defs>
+    </svg>
+  </div>
+
+  <h2>Nisha Chauhan,<br>will you marry me? <em>💍</em></h2>
+
+  <div class="btn-group">
+    <button class="btn btn-yes" onclick="sayYes()">Yes, I will! 💕</button>
+    <button class="btn btn-no" id="noBtn" onmouseover="runAway()" onclick="runAway()">No</button>
+  </div>
+</div>
+
+<!-- SCREEN 4: Celebration -->
+<div class="screen" id="screen4">
+  <h1>She Said YES! 🎉💍</h1>
+  <p>Forever starts now, Nisha ♥</p>
+</div>
+
+<!-- Progress -->
+<div id="progress">
+  <div class="dot active" id="d1"></div>
+  <div class="dot" id="d2"></div>
+  <div class="dot" id="d3"></div>
+  <div class="dot" id="d4"></div>
+</div>
+
+<script>
+  // Stars
+  const starCanvas = document.getElementById('stars-canvas');
+  const sCtx = starCanvas.getContext('2d');
+  let stars = [];
+
+  function resizeCanvas() {
+    starCanvas.width = window.innerWidth;
+    starCanvas.height = window.innerHeight;
+    document.getElementById('confetti-canvas').width = window.innerWidth;
+    document.getElementById('confetti-canvas').height = window.innerHeight;
+  }
+  resizeCanvas();
+  window.addEventListener('resize', resizeCanvas);
+
+  for (let i = 0; i < 200; i++) {
+    stars.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.3,
+      alpha: Math.random(),
+      speed: Math.random() * 0.005 + 0.002,
+      phase: Math.random() * Math.PI * 2
+    });
+  }
+
+  function drawStars(t) {
+    sCtx.clearRect(0, 0, starCanvas.width, starCanvas.height);
+    stars.forEach(s => {
+      s.alpha = 0.3 + 0.7 * Math.abs(Math.sin(t * s.speed + s.phase));
+      sCtx.beginPath();
+      sCtx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      sCtx.fillStyle = `rgba(255,230,240,${s.alpha})`;
+      sCtx.fill();
+    });
+    requestAnimationFrame(drawStars);
+  }
+  requestAnimationFrame(drawStars);
+
+  // Screen management
+  let currentScreen = 1;
+
+  function goToScreen(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.querySelectorAll('.dot').forEach(d => d.classList.remove('active'));
+    document.getElementById('screen' + n).classList.add('active');
+    document.getElementById('d' + n).classList.add('active');
+    currentScreen = n;
+
+    if (n === 2) startJourney();
+  }
+
+  // Journey screen
+  const messages = ['jt1','jt2','jt3','jt4'];
+  let msgIndex = 0;
+  let journeyTimer;
+
+  function startJourney() {
+    msgIndex = 0;
+    messages.forEach(id => document.getElementById(id).classList.remove('show'));
+    showNextMessage();
+  }
+
+  function showNextMessage() {
+    if (msgIndex < messages.length) {
+      // Hide previous
+      if (msgIndex > 0) document.getElementById(messages[msgIndex-1]).classList.remove('show');
+      document.getElementById(messages[msgIndex]).classList.add('show');
+      msgIndex++;
+      journeyTimer = setTimeout(msgIndex < messages.length ? showNextMessage : () => {
+        setTimeout(() => goToScreen(3), 1200);
+      }, 2200);
+    }
+  }
+
+  // No button runs away
+  let noMoves = 0;
+  function runAway() {
+    noMoves++;
+    const btn = document.getElementById('noBtn');
+    const maxX = window.innerWidth - 150;
+    const maxY = window.innerHeight - 60;
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+    btn.style.position = 'fixed';
+    btn.style.left = x + 'px';
+    btn.style.top = y + 'px';
+    btn.style.zIndex = '999';
+    if (noMoves > 3) {
+      btn.style.display = 'none';
+    }
+  }
+
+  // Yes!
+  function sayYes() {
+    launchHearts();
+    setTimeout(() => {
+      goToScreen(4);
+      launchConfetti();
+    }, 800);
+  }
+
+  // Hearts burst
+  function launchHearts() {
+    for (let i = 0; i < 20; i++) {
+      setTimeout(() => {
+        const h = document.createElement('div');
+        h.className = 'floating-heart';
+        h.textContent = ['💕','💖','💗','💝','❤️'][Math.floor(Math.random()*5)];
+        h.style.left = Math.random() * 100 + 'vw';
+        h.style.bottom = '0';
+        h.style.animationDuration = (3 + Math.random() * 2) + 's';
+        h.style.fontSize = (1 + Math.random() * 2) + 'rem';
+        document.body.appendChild(h);
+        setTimeout(() => h.remove(), 6000);
+      }, i * 100);
+    }
+  }
+
+  // Confetti
+  const cCanvas = document.getElementById('confetti-canvas');
+  const cCtx = cCanvas.getContext('2d');
+  let confettiPieces = [];
+  let confettiRunning = false;
+
+  function launchConfetti() {
+    confettiRunning = true;
+    for (let i = 0; i < 150; i++) {
+      confettiPieces.push({
+        x: Math.random() * cCanvas.width,
+        y: -10,
+        vx: (Math.random() - 0.5) * 6,
+        vy: Math.random() * 4 + 2,
+        color: ['#ff6b8a','#ffd700','#ff3366','#fff','#ffb3c6','#c084fc'][Math.floor(Math.random()*6)],
+        size: Math.random() * 8 + 4,
+        rot: Math.random() * 360,
+        rotSpeed: (Math.random() - 0.5) * 5,
+        shape: Math.random() > 0.5 ? 'rect' : 'circle'
+      });
+    }
+    animateConfetti();
+
+    // Stop after 5s
+    setTimeout(() => {
+      confettiRunning = false;
+      confettiPieces = [];
+      cCtx.clearRect(0,0,cCanvas.width,cCanvas.height);
+      // Restart hearts loop
+      setInterval(launchHearts, 3000);
+    }, 5000);
+  }
+
+  function animateConfetti() {
+    if (!confettiRunning) return;
+    cCtx.clearRect(0, 0, cCanvas.width, cCanvas.height);
+    confettiPieces.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.1;
+      p.rot += p.rotSpeed;
+      cCtx.save();
+      cCtx.translate(p.x, p.y);
+      cCtx.rotate(p.rot * Math.PI / 180);
+      cCtx.fillStyle = p.color;
+      if (p.shape === 'rect') {
+        cCtx.fillRect(-p.size/2, -p.size/4, p.size, p.size/2);
+      } else {
+        cCtx.beginPath();
+        cCtx.arc(0, 0, p.size/2, 0, Math.PI*2);
+        cCtx.fill();
+      }
+      cCtx.restore();
+    });
+    confettiPieces = confettiPieces.filter(p => p.y < cCanvas.height + 20);
+    if (confettiPieces.length > 0) requestAnimationFrame(animateConfetti);
+  }
+</script>
+</body>
+</html>
